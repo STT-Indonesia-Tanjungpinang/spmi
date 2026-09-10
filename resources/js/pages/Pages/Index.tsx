@@ -1,7 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
+import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
-import { Plus, Eye, EyeOff, FolderOpen, Pencil, CheckCircle2 } from 'lucide-react';
+import { Plus, Eye, EyeOff, FolderOpen, Pencil, CheckCircle2, Trash2 } from 'lucide-react';
 import { type BreadcrumbItem } from '@/types';
 
 interface Page {
@@ -30,6 +31,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Index({ pages }: Props) {
+    const [deletingId, setDeletingId] = useState<number | null>(null);
+
+    const handleDelete = (page: Page) => {
+        if (!confirm(`Hapus halaman "${page.title}"?`)) return;
+
+        setDeletingId(page.id);
+        router.delete(`/pages/${page.id}`, {
+            preserveScroll: true,
+            onFinish: () => setDeletingId(null),
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pages" />
@@ -112,15 +125,25 @@ export default function Index({ pages }: Props) {
                                             </div>
 
                                             <div className="flex items-center gap-2">
-                                                {page.slug === 'tentang-upm' && (
-                                                    <Link
-                                                        href={`/pages/${page.id}/edit`}
-                                                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-                                                        title="Edit page"
+                                                <Link href={`/pages/${page.id}/edit`}>
+                                                    <Button
+                                                        size="sm"
+                                                        className="bg-white text-gray-900 hover:bg-gray-100 dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-500"
                                                     >
-                                                        <Pencil className="h-5 w-5" />
-                                                    </Link>
-                                                )}
+                                                        <Pencil className="mr-2 h-4 w-4" />
+                                                        Edit
+                                                    </Button>
+                                                </Link>
+                                                <Button
+                                                    type="button"
+                                                    variant="destructive"
+                                                    size="sm"
+                                                    onClick={() => handleDelete(page)}
+                                                    disabled={deletingId === page.id}
+                                                >
+                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    {deletingId === page.id ? 'Menghapus...' : 'Hapus'}
+                                                </Button>
                                                 {['audit-mutu-internal', 'sop', 'pedoman', 'laporan-hasil-evaluasi', 'dokumen-spmi', 'rtm-rtl'].includes(page.slug) && (
                                                     <Link
                                                         href={`/pages/${page.id}/document-sections`}

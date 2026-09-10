@@ -21,7 +21,10 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->timestamps();
 
-            $table->unique(['questionnaire_response_id', 'questionnaire_option_id']);
+            $table->unique(
+                ['questionnaire_response_id', 'questionnaire_option_id'],
+                'qir_response_option_unique'
+            );
         });
     }
 

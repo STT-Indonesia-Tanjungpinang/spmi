@@ -19,7 +19,10 @@ return new class extends Migration
             $table->text('value');
             $table->timestamps();
 
-            $table->unique(['questionnaire_response_id', 'questionnaire_field_id']);
+            $table->unique(
+                ['questionnaire_response_id', 'questionnaire_field_id'],
+                'qfr_response_field_unique'
+            );
         });
     }
 
