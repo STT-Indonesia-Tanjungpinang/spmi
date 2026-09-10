@@ -1,7 +1,7 @@
 import { home } from '@/routes';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { type PropsWithChildren } from 'react';
+import { type PropsWithChildren, useEffect } from 'react';
 
 interface AuthLayoutProps {
     name?: string;
@@ -19,8 +19,13 @@ export default function AuthSimpleLayout({
     const brandLogoUrl = brand?.logoUrl;
     const brandInitial = brandName.trim().charAt(0).toUpperCase() || 'S';
 
+    useEffect(() => {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
+    }, []);
+
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen text-gray-900">
             {/* Left Section - Blue Background */}
             <div className="hidden lg:flex lg:w-1/2 p-12 flex-col justify-between" style={{ background: 'linear-gradient(to bottom right, #2563eb, #1e40af)' }}>
                 <div>

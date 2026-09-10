@@ -17,9 +17,8 @@
                 document.documentElement.classList.add('dark');
             } else {
                 // Force light mode for other pages
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                }
+                document.documentElement.classList.remove('dark');
+                document.documentElement.style.colorScheme = 'light';
             }
         </script>
 

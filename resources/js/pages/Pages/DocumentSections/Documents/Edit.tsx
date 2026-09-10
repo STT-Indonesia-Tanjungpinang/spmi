@@ -42,12 +42,13 @@ export default function Edit({ page, section, document }: Props) {
     const isKebijakan = page.slug === 'laporan-hasil-evaluasi';
     const isSpmi = page.slug === 'dokumen-spmi';
     const isAmi = page.slug === 'audit-mutu-internal';
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         doc_number: document.doc_number || '',
         title: document.title,
         description: document.description || '',
         order: document.order,
         file: null as File | null,
+        _method: 'put',
     });
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -59,7 +60,7 @@ export default function Edit({ page, section, document }: Props) {
 
     const submit: FormEventHandler = (event) => {
         event.preventDefault();
-        put(`/pages/${page.id}/document-sections/${section.id}/documents/${document.id}`, {
+        post(`/pages/${page.id}/document-sections/${section.id}/documents/${document.id}`, {
             forceFormData: true,
         });
     };

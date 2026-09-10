@@ -19,9 +19,33 @@ const setCookie = (name: string, value: string, days = 365) => {
     document.cookie = `${name}=${value};path=/;max-age=${maxAge};SameSite=Lax`;
 };
 
+const AUTH_PATH_PREFIXES = [
+    '/login',
+    '/register',
+    '/forgot-password',
+    '/reset-password',
+    '/two-factor-challenge',
+    '/confirm-password',
+    '/verify-email',
+    '/email/verify',
+];
+
+const isAuthPath = () => {
+    if (typeof window === 'undefined') {
+        return false;
+    }
+
+    const path = window.location.pathname;
+
+    return AUTH_PATH_PREFIXES.some(
+        (prefix) => path === prefix || path.startsWith(`${prefix}/`),
+    );
+};
+
 const applyTheme = (appearance: Appearance) => {
     const isDark =
-        appearance === 'dark' || (appearance === 'system' && prefersDark());
+        !isAuthPath() &&
+        (appearance === 'dark' || (appearance === 'system' && prefersDark()));
 
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';

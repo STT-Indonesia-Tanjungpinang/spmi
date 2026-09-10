@@ -140,6 +140,9 @@
     html,
     body {
         @apply bg-white text-gray-900;
+        word-spacing: 0.12em;
+        letter-spacing: 0.01em;
+        font-variant-ligatures: none;
     }
 
     /* Force light theme - disable dark mode */
